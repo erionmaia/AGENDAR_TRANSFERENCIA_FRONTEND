@@ -1,6 +1,7 @@
 # Sistema de Agendamento de Transferências Financeiras - Frontend
 
 Frontend desenvolvido em **Angular** para o sistema de agendamento de transferências financeiras, integrando com a API Spring Boot do backend.
+Desenvolvido exclusivamente como desafio técnico para a GlobalTI.
 
 ## Tecnologias Utilizadas
 
