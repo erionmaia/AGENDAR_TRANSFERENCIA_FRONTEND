@@ -1,0 +1,93 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <div class="logo">
+        <span class="logo-icon">🏦</span>
+        <h1>GlobalTI</h1>
+      </div>
+      <h2>Bem-vindo de volta!</h2>
+      <p>Faça login para acessar o sistema de transferências</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <div class="form-group">
+        <label for="username">Usuário</label>
+        <div class="input-wrapper">
+          <span class="input-icon">👤</span>
+          <input 
+            type="text" 
+            id="username" 
+            formControlName="username"
+            placeholder="seu_usuario"
+            [class.error]="isFieldInvalid('username')"
+            autocomplete="username"
+          >
+        </div>
+        <div class="error-message" *ngIf="isFieldInvalid('username')">
+          {{ getFieldError('username') }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="senha">Senha</label>
+        <div class="input-wrapper">
+          <span class="input-icon">🔒</span>
+          <input 
+            [type]="showPassword ? 'text' : 'password'" 
+            id="password" 
+            formControlName="password"
+            placeholder="••••••••"
+            [class.error]="isFieldInvalid('password')"
+            autocomplete="current-password"
+          >
+          <button 
+            type="button" 
+            class="password-toggle"
+            (click)="togglePasswordVisibility()"
+            [attr.aria-label]="showPassword ? 'Ocultar senha' : 'Mostrar senha'"
+          >
+            <span *ngIf="!showPassword">👁️</span>
+            <span *ngIf="showPassword">🙈</span>
+          </button>
+        </div>
+        <div class="error-message" *ngIf="isFieldInvalid('password')">
+          {{ getFieldError('password') }}
+        </div>
+      </div>
+
+      <button 
+        type="submit" 
+        class="login-btn"
+        [disabled]="!loginForm.valid || isLoading"
+      >
+        <span class="btn-icon" *ngIf="!isLoading">🚀</span>
+        <span class="btn-icon" *ngIf="isLoading">⏳</span>
+        {{ isLoading ? 'Entrando...' : 'Entrar' }}
+      </button>
+    </form>
+
+    <!-- Mensagem de erro -->
+    <div class="alert alert-error" *ngIf="errorMessage">
+      <span class="alert-icon">❌</span>
+      {{ errorMessage }}
+    </div>
+
+    <!-- Informações do sistema -->
+    <div class="system-info">
+      <h4>ℹ️ Informações do Sistema</h4>
+      <div class="info-item">
+        <strong>Backend:</strong> 
+        <span class="status-indicator" [class.online]="backendOnline" [class.offline]="!backendOnline">
+          {{ backendStatus }}
+        </span>
+      </div>
+      <div class="info-item">
+        <strong>Versão:</strong> 1.0.0
+      </div>
+    </div>
+
+    <div class="login-footer">
+      <p>&copy; 2024 GlobalTI - Sistema de Transferências Financeiras</p>
+    </div>
+  </div>
+</div>

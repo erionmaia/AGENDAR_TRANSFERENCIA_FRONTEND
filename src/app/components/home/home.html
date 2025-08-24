@@ -1,0 +1,100 @@
+<div class="home-container">
+  <div class="welcome-section">
+    <h2 class="welcome-title">Bem-vindo ao Sistema de Transferências Financeiras</h2>
+    <p class="welcome-description">
+      Agende suas transferências financeiras de forma simples, segura e transparente. 
+      Nosso sistema calcula automaticamente as taxas baseado na data de transferência.
+    </p>
+  </div>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">📅</div>
+      <h3>Agendamento Simples</h3>
+      <p>Agende transferências para datas futuras com apenas alguns cliques</p>
+      <a routerLink="/agendar" class="feature-link">Agendar Agora</a>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">🧮</div>
+      <h3>Cálculo Automático</h3>
+      <p>Taxas calculadas automaticamente conforme as regras do sistema</p>
+      <a routerLink="/calcular-taxa" class="feature-link">Calcular Taxa</a>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <h3>Extrato Completo</h3>
+      <p>Acompanhe todas as suas transferências agendadas e realizadas</p>
+      <a routerLink="/extrato" class="feature-link">Ver Extrato</a>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">🔒</div>
+      <h3>Segurança Total</h3>
+      <p>Sistema seguro com validações e tratamento de erros robusto</p>
+    </div>
+  </div>
+
+  <div class="taxa-info">
+    <h3>Como Funcionam as Taxas?</h3>
+    <div class="taxa-table">
+      <div class="taxa-header">
+        <span>Dias para Transferência</span>
+        <span>Taxa Fixa</span>
+        <span>Taxa Percentual</span>
+      </div>
+      <div class="taxa-row">
+        <span>0 dias</span>
+        <span>R$ 3,00</span>
+        <span>2,5%</span>
+      </div>
+      <div class="taxa-row">
+        <span>1-10 dias</span>
+        <span>R$ 12,00</span>
+        <span>0,0%</span>
+      </div>
+      <div class="taxa-row">
+        <span>11-20 dias</span>
+        <span>R$ 0,00</span>
+        <span>8,2%</span>
+      </div>
+      <div class="taxa-row">
+        <span>21-30 dias</span>
+        <span>R$ 0,00</span>
+        <span>6,9%</span>
+      </div>
+      <div class="taxa-row">
+        <span>31-40 dias</span>
+        <span>R$ 0,00</span>
+        <span>4,7%</span>
+      </div>
+      <div class="taxa-row">
+        <span>41-50 dias</span>
+        <span>R$ 0,00</span>
+        <span>1,7%</span>
+      </div>
+    </div>
+    <p class="taxa-note">
+      <strong>Nota:</strong> Transferências com mais de 50 dias não são permitidas.
+    </p>
+  </div>
+
+  <div class="quick-actions">
+    <h3>Ações Rápidas</h3>
+    <div class="action-buttons">
+      <a routerLink="/agendar" class="btn btn-primary">
+        <span class="btn-icon">📅</span>
+        Nova Transferência
+      </a>
+      <a routerLink="/extrato" class="btn btn-secondary">
+        <span class="btn-icon">📊</span>
+        Ver Extrato
+      </a>
+      <a routerLink="/calcular-taxa" class="btn btn-outline">
+        <span class="btn-icon">🧮</span>
+        Calcular Taxa
+      </a>
+    </div>
+  </div>
+</div>

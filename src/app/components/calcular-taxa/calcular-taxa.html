@@ -1,0 +1,182 @@
+<div class="calcular-taxa-container">
+  <div class="header-section">
+    <h2>
+      <span class="header-icon">🧮</span>
+      Calcular Taxa de Transferência
+    </h2>
+    <p class="header-description">
+      Simule o custo da sua transferência antes de agendá-la
+    </p>
+  </div>
+
+  <div class="form-section">
+    <form [formGroup]="calculoForm" (ngSubmit)="onSubmit()" class="calculo-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="valor">Valor da Transferência</label>
+          <div class="input-wrapper">
+            <span class="input-icon">💰</span>
+            <input 
+              type="number" 
+              id="valor" 
+              formControlName="valor"
+              placeholder="0,00"
+              step="0.01"
+              min="0.01"
+              [class.error]="isFieldInvalid('valor')"
+            >
+            <span class="currency">R$</span>
+          </div>
+          <div class="error-message" *ngIf="isFieldInvalid('valor')">
+            {{ getFieldError('valor') }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="dataTransferencia">Data da Transferência</label>
+          <div class="input-wrapper">
+            <span class="input-icon">📅</span>
+            <input 
+              type="date" 
+              id="dataTransferencia" 
+              formControlName="dataTransferencia"
+              [min]="utilService.getDataMinima()"
+              [max]="utilService.getDataMaxima()"
+              [class.error]="isFieldInvalid('dataTransferencia')"
+            >
+          </div>
+          <div class="error-message" *ngIf="isFieldInvalid('dataTransferencia')">
+            {{ getFieldError('dataTransferencia') }}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button 
+          type="submit" 
+          class="calcular-btn"
+          [disabled]="!calculoForm.valid || isLoading"
+        >
+          <span class="btn-icon" *ngIf="!isLoading">🔍</span>
+          <span class="btn-icon" *ngIf="isLoading">⏳</span>
+          {{ isLoading ? 'Calculando...' : 'Calcular Taxa' }}
+        </button>
+
+        <button 
+          type="button" 
+          class="limpar-btn"
+          (click)="limparResultado()"
+          *ngIf="resultado"
+        >
+          <span class="btn-icon">🗑️</span>
+          Limpar
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Mensagem de erro -->
+  <div class="alert alert-error" *ngIf="errorMessage">
+    <span class="alert-icon">❌</span>
+    {{ errorMessage }}
+  </div>
+
+  <!-- Resultado do cálculo -->
+  <div class="resultado-section" *ngIf="resultado">
+    <div class="resultado-card">
+      <div class="resultado-header">
+        <h3>
+          <span class="result-icon">📊</span>
+          Resultado do Cálculo
+        </h3>
+        <div class="status-badge" [class.sucesso]="resultado.sucesso" [class.erro]="!resultado.sucesso">
+          {{ resultado.sucesso ? 'Válido' : 'Inválido' }}
+        </div>
+      </div>
+
+      <div class="resultado-content">
+        <div class="valor-details">
+          <div class="detail-item">
+            <span class="detail-label">Valor Original:</span>
+            <span class="detail-value">{{ utilService.formatarMoeda(resultado.valor) }}</span>
+          </div>
+          
+          <div class="detail-item">
+            <span class="detail-label">Taxa Aplicada:</span>
+            <span class="detail-value taxa">{{ utilService.formatarMoeda(resultado.taxa) }}</span>
+          </div>
+          
+          <div class="detail-item total">
+            <span class="detail-label">Valor Total:</span>
+            <span class="detail-value">{{ utilService.formatarMoeda(resultado.valorTotal) }}</span>
+          </div>
+        </div>
+
+        <div class="transferencia-info">
+          <div class="info-item">
+            <span class="info-icon">📅</span>
+            <div class="info-content">
+              <span class="info-label">Data da Transferência:</span>
+              <span class="info-value">{{ utilService.formatarData(resultado.dataTransferencia) }}</span>
+            </div>
+          </div>
+          
+          <div class="info-item">
+            <span class="info-icon">⏰</span>
+            <div class="info-content">
+              <span class="info-label">Dias para Transferência:</span>
+              <span class="info-value">{{ resultado.diasParaTransferencia }} dia(s)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mensagem-resultado" *ngIf="resultado.mensagem">
+          <span class="mensagem-icon">💡</span>
+          {{ resultado.mensagem }}
+        </div>
+      </div>
+
+      <div class="resultado-actions">
+        <button class="agendar-btn" routerLink="/agendar">
+          <span class="btn-icon">📅</span>
+          Agendar Transferência
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Informações sobre taxas -->
+  <div class="info-section">
+    <h4>ℹ️ Como são calculadas as taxas?</h4>
+    <div class="taxa-rules">
+      <div class="rule-item">
+        <span class="rule-period">Mesmo dia (0 dias):</span>
+        <span class="rule-value">R$ 3,30 + 3% do valor</span>
+      </div>
+      <div class="rule-item">
+        <span class="rule-period">1 a 10 dias:</span>
+        <span class="rule-value">R$ 12,00 (valor fixo)</span>
+      </div>
+      <div class="rule-item">
+        <span class="rule-period">11 a 20 dias:</span>
+        <span class="rule-value">8,2% do valor</span>
+      </div>
+      <div class="rule-item">
+        <span class="rule-period">21 a 30 dias:</span>
+        <span class="rule-value">6,9% do valor</span>
+      </div>
+      <div class="rule-item">
+        <span class="rule-period">31 a 40 dias:</span>
+        <span class="rule-value">4,7% do valor</span>
+      </div>
+      <div class="rule-item">
+        <span class="rule-period">41 a 50 dias:</span>
+        <span class="rule-value">1,7% do valor</span>
+      </div>
+      <div class="rule-item limite">
+        <span class="rule-period">Acima de 50 dias:</span>
+        <span class="rule-value">Não permitido</span>
+      </div>
+    </div>
+  </div>
+</div>

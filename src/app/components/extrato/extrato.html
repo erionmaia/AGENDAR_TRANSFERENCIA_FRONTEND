@@ -1,0 +1,256 @@
+<div class="extrato-container">
+  <div class="header-section">
+    <h2>
+      <span class="header-icon">📊</span>
+      Extrato de Transferências
+    </h2>
+    <p class="header-description">
+      Visualize e gerencie todas as suas transferências agendadas
+    </p>
+  </div>
+
+  <!-- Filtros -->
+  <div class="filtros-section">
+    <form [formGroup]="filtroForm" class="filtros-form">
+      <div class="filtros-grid">
+        <div class="filtro-group">
+          <label for="status">Status</label>
+          <select id="status" formControlName="status" class="filtro-select">
+            <option value="">Todos os status</option>
+            <option *ngFor="let status of getStatusOptions()" [value]="status">
+              {{ utilService.getStatusText(status) }}
+            </option>
+          </select>
+        </div>
+
+        <div class="filtro-group">
+          <label for="contaOrigem">Conta Origem</label>
+          <input 
+            type="text" 
+            id="contaOrigem" 
+            formControlName="contaOrigem"
+            placeholder="Digite a conta origem"
+            class="filtro-input"
+          >
+        </div>
+
+        <div class="filtro-group">
+          <label for="contaDestino">Conta Destino</label>
+          <input 
+            type="text" 
+            id="contaDestino" 
+            formControlName="contaDestino"
+            placeholder="Digite a conta destino"
+            class="filtro-input"
+          >
+        </div>
+
+        <div class="filtro-group">
+          <label for="periodoInicio">Data Início</label>
+          <input 
+            type="date" 
+            id="periodoInicio" 
+            formControlName="periodoInicio"
+            class="filtro-input"
+          >
+        </div>
+
+        <div class="filtro-group">
+          <label for="periodoFim">Data Fim</label>
+          <input 
+            type="date" 
+            id="periodoFim" 
+            formControlName="periodoFim"
+            class="filtro-input"
+          >
+        </div>
+
+        <div class="filtro-actions">
+          <button type="button" class="limpar-filtros-btn" (click)="limparFiltros()">
+            <span class="btn-icon">🗑️</span>
+            Limpar
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Resumo -->
+  <div class="resumo-section" *ngIf="transferenciasFiltered.length > 0">
+    <div class="resumo-cards">
+      <div class="resumo-card">
+        <div class="resumo-icon">📋</div>
+        <div class="resumo-content">
+          <div class="resumo-label">Total de Transferências</div>
+          <div class="resumo-value">{{ transferenciasFiltered.length }}</div>
+        </div>
+      </div>
+
+      <div class="resumo-card">
+        <div class="resumo-icon">💰</div>
+        <div class="resumo-content">
+          <div class="resumo-label">Valor Total</div>
+          <div class="resumo-value">{{ utilService.formatarMoeda(getTotalTransferencias()) }}</div>
+        </div>
+      </div>
+
+      <div class="resumo-card">
+        <div class="resumo-icon">🏷️</div>
+        <div class="resumo-content">
+          <div class="resumo-label">Total em Taxas</div>
+          <div class="resumo-value">{{ utilService.formatarMoeda(getTotalTaxas()) }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-section" *ngIf="isLoading">
+    <div class="loading-spinner">⏳</div>
+    <p>Carregando transferências...</p>
+  </div>
+
+  <!-- Mensagem de erro -->
+  <div class="alert alert-error" *ngIf="errorMessage">
+    <span class="alert-icon">❌</span>
+    {{ errorMessage }}
+    <button type="button" class="retry-btn" (click)="carregarTransferencias()">
+      <span class="btn-icon">🔄</span>
+      Tentar novamente
+    </button>
+  </div>
+
+  <!-- Lista de transferências -->
+  <div class="transferencias-section" *ngIf="!isLoading && !errorMessage">
+    <div class="transferencias-header">
+      <h3>
+        <span class="list-icon">📋</span>
+        Transferências 
+        <span class="count">({{ transferenciasFiltered.length }})</span>
+      </h3>
+      
+      <button class="nova-transferencia-btn" routerLink="/agendar">
+        <span class="btn-icon">➕</span>
+        Nova Transferência
+      </button>
+    </div>
+
+    <!-- Lista vazia -->
+    <div class="empty-state" *ngIf="transferenciasFiltered.length === 0 && transferencias.length === 0">
+      <div class="empty-icon">📭</div>
+      <h4>Nenhuma transferência encontrada</h4>
+      <p>Você ainda não tem transferências agendadas.</p>
+      <button class="agendar-primeira-btn" routerLink="/agendar">
+        <span class="btn-icon">🚀</span>
+        Agendar Primeira Transferência
+      </button>
+    </div>
+
+    <!-- Nenhum resultado após filtros -->
+    <div class="no-results" *ngIf="transferenciasFiltered.length === 0 && transferencias.length > 0">
+      <div class="no-results-icon">🔍</div>
+      <h4>Nenhum resultado encontrado</h4>
+      <p>Tente ajustar os filtros para encontrar suas transferências.</p>
+      <button class="limpar-filtros-btn" (click)="limparFiltros()">
+        <span class="btn-icon">🗑️</span>
+        Limpar Filtros
+      </button>
+    </div>
+
+    <!-- Lista de transferências -->
+    <div class="transferencias-list" *ngIf="transferenciasFiltered.length > 0">
+      <div 
+        class="transferencia-card" 
+        *ngFor="let transferencia of transferenciasFiltered; trackBy: trackByTransferenciaId"
+        [class.agendada]="transferencia.status === 'AGENDADA'"
+        [class.realizada]="transferencia.status === 'REALIZADA'"
+        [class.cancelada]="transferencia.status === 'CANCELADA'"
+      >
+        <div class="transferencia-header">
+          <div class="transferencia-id">
+            <span class="id-label">ID:</span>
+            <span class="id-value">#{{ transferencia.id }}</span>
+          </div>
+          
+          <div class="transferencia-status">
+            <span 
+              class="status-badge" 
+              [class]="utilService.getStatusClass(transferencia.status || '')"
+            >
+              {{ utilService.getStatusText(transferencia.status || '') }}
+            </span>
+          </div>
+        </div>
+
+        <div class="transferencia-content">
+          <div class="contas-info">
+            <div class="conta-item">
+              <span class="conta-label">Origem:</span>
+              <span class="conta-value">{{ utilService.formatarConta(transferencia.contaOrigem) }}</span>
+            </div>
+            
+            <div class="transferencia-arrow">→</div>
+            
+            <div class="conta-item">
+              <span class="conta-label">Destino:</span>
+              <span class="conta-value">{{ utilService.formatarConta(transferencia.contaDestino) }}</span>
+            </div>
+          </div>
+
+          <div class="valores-info">
+            <div class="valor-item">
+              <span class="valor-label">Valor:</span>
+              <span class="valor-value">{{ utilService.formatarMoeda(transferencia.valor) }}</span>
+            </div>
+            
+            <div class="valor-item">
+              <span class="valor-label">Taxa:</span>
+              <span class="valor-value taxa">{{ utilService.formatarMoeda(transferencia.taxa) }}</span>
+            </div>
+            
+            <div class="valor-item total">
+              <span class="valor-label">Total:</span>
+              <span class="valor-value">{{ utilService.formatarMoeda(transferencia.valorTotal || transferencia.valor + transferencia.taxa) }}</span>
+            </div>
+          </div>
+
+          <div class="datas-info">
+            <div class="data-item">
+              <span class="data-icon">📅</span>
+              <div class="data-content">
+                <span class="data-label">Transferência:</span>
+                <span class="data-value">{{ utilService.formatarData(transferencia.dataTransferencia) }}</span>
+              </div>
+            </div>
+            
+            <div class="data-item" *ngIf="transferencia.dataAgendamento">
+              <span class="data-icon">🕒</span>
+              <div class="data-content">
+                <span class="data-label">Agendamento:</span>
+                <span class="data-value">{{ utilService.formatarDataHora(transferencia.dataAgendamento) }}</span>
+              </div>
+            </div>
+
+            <div class="data-item" *ngIf="transferencia.diasParaTransferencia !== undefined">
+              <span class="data-icon">⏰</span>
+              <div class="data-content">
+                <span class="data-label">Dias restantes:</span>
+                <span class="data-value">{{ transferencia.diasParaTransferencia }} dia(s)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="transferencia-actions" *ngIf="transferencia.status === 'AGENDADA'">
+          <button 
+            class="cancelar-btn"
+            (click)="cancelarTransferencia(transferencia.id!)"
+          >
+            <span class="btn-icon">❌</span>
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

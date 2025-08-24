@@ -1,0 +1,138 @@
+<div class="agendar-container">
+  <div class="page-header">
+    <h2>📅 Agendar Nova Transferência</h2>
+    <p>Preencha os dados abaixo para agendar sua transferência financeira</p>
+  </div>
+
+  <div class="form-container">
+    <form [formGroup]="transferenciaForm" (ngSubmit)="onSubmit()" class="transferencia-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="contaOrigem">Conta de Origem *</label>
+          <input 
+            type="text" 
+            id="contaOrigem" 
+            formControlName="contaOrigem"
+            placeholder="XXXXXXXXXX (10 dígitos)"
+            maxlength="10"
+            [class.error]="isFieldInvalid('contaOrigem')"
+          >
+          <div class="error-message" *ngIf="isFieldInvalid('contaOrigem')">
+            {{ getFieldError('contaOrigem') }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="contaDestino">Conta de Destino *</label>
+          <input 
+            type="text" 
+            id="contaDestino" 
+            formControlName="contaDestino"
+            placeholder="XXXXXXXXXX (10 dígitos)"
+            maxlength="10"
+            [class.error]="isFieldInvalid('contaDestino')"
+          >
+          <div class="error-message" *ngIf="isFieldInvalid('contaDestino')">
+            {{ getFieldError('contaDestino') }}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="valor">Valor da Transferência *</label>
+          <div class="input-with-prefix">
+            <span class="currency-prefix">R$</span>
+            <input 
+              type="number" 
+              id="valor" 
+              formControlName="valor"
+              placeholder="0,00"
+              step="0.01"
+              min="0.01"
+              [class.error]="isFieldInvalid('valor')"
+            >
+          </div>
+          <div class="error-message" *ngIf="isFieldInvalid('valor')">
+            {{ getFieldError('valor') }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="dataTransferencia">Data da Transferência *</label>
+          <input 
+            type="date" 
+            id="dataTransferencia" 
+            formControlName="dataTransferencia"
+            [min]="utilService.getDataMinima()"
+            [max]="utilService.getDataMaxima()"
+            [class.error]="isFieldInvalid('dataTransferencia')"
+          >
+          <div class="error-message" *ngIf="isFieldInvalid('dataTransferencia')">
+            {{ getFieldError('dataTransferencia') }}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button 
+          type="button" 
+          class="btn btn-secondary" 
+          (click)="calcularTaxa()"
+          [disabled]="!transferenciaForm.valid || isLoading"
+        >
+          <span class="btn-icon">🧮</span>
+          Calcular Taxa
+        </button>
+        
+        <button 
+          type="submit" 
+          class="btn btn-primary"
+          [disabled]="!transferenciaForm.valid || isLoading"
+        >
+          <span class="btn-icon" *ngIf="!isLoading">📅</span>
+          <span class="btn-icon" *ngIf="isLoading">⏳</span>
+          {{ isLoading ? 'Agendando...' : 'Agendar Transferência' }}
+        </button>
+      </div>
+    </form>
+
+    <!-- Resultado do cálculo de taxa -->
+    <div class="taxa-result" *ngIf="taxaCalculada && calculoTaxa">
+      <h3>📊 Resumo da Transferência</h3>
+      <div class="taxa-summary">
+        <div class="summary-item">
+          <span class="label">Valor:</span>
+          <span class="value">{{ utilService.formatarMoeda(calculoTaxa.valor) }}</span>
+        </div>
+        <div class="summary-item">
+          <span class="label">Taxa:</span>
+          <span class="value">{{ utilService.formatarMoeda(calculoTaxa.taxa) }}</span>
+        </div>
+        <div class="summary-item total">
+          <span class="label">Total:</span>
+          <span class="value">{{ utilService.formatarMoeda(calculoTaxa.valorTotal) }}</span>
+        </div>
+        <div class="summary-item">
+          <span class="label">Dias para transferência:</span>
+          <span class="value">{{ calculoTaxa.diasParaTransferencia }}</span>
+        </div>
+        <div class="summary-item">
+          <span class="label">Data de transferência:</span>
+          <span class="value">{{ utilService.formatarData(calculoTaxa.dataTransferencia) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mensagens de erro ou sucesso -->
+    <div class="alert alert-error" *ngIf="errorMessage">
+      <span class="alert-icon">❌</span>
+      {{ errorMessage }}
+    </div>
+
+    <div class="alert alert-success" *ngIf="successMessage">
+      <span class="alert-icon">✅</span>
+      {{ successMessage }}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+<div class="app-container">
+  <!-- Header e Menu apenas se autenticado -->
+  <ng-container *ngIf="authService.isAuthenticated()">
+    <header class="app-header">
+      <div class="container">
+        <h1 class="app-title">
+          <span class="icon">🏦</span>
+          Sistema de Transferências Financeiras
+        </h1>
+        <p class="app-subtitle">Agende suas transferências com facilidade e transparência</p>
+      </div>
+    </header>
+    
+    <app-nav-menu></app-nav-menu>
+  </ng-container>
+  
+  <main class="app-main" [class.auth-main]="!authService.isAuthenticated()">
+    <div class="container">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+  
+  <!-- Footer apenas se autenticado -->
+  <footer class="app-footer" *ngIf="authService.isAuthenticated()">
+    <div class="container">
+      <p>&copy; 2024 Sistema de Transferências Financeiras - GlobalTI</p>
+    </div>
+  </footer>
+</div>
