@@ -1,8 +1,8 @@
-# 🏦 Sistema de Agendamento de Transferências Financeiras - Frontend
+# Sistema de Agendamento de Transferências Financeiras - Frontend
 
 Frontend desenvolvido em **Angular** para o sistema de agendamento de transferências financeiras, integrando com a API Spring Boot do backend.
 
-## 🚀 Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 - **Angular 20** - Framework para aplicações web
 - **TypeScript** - Linguagem de programação
@@ -12,7 +12,7 @@ Frontend desenvolvido em **Angular** para o sistema de agendamento de transferê
 - **Angular Router** - Roteamento da aplicação
 - **Angular HttpClient** - Comunicação com API REST
 
-## 🏗️ Arquitetura do Sistema
+## Arquitetura do Sistema
 
 ### Padrões Arquiteturais
 - **Arquitetura em Componentes** (Component-based architecture)
@@ -40,22 +40,22 @@ src/
 └── styles.scss              # Estilos globais
 ```
 
-## 📱 Funcionalidades Implementadas
+## Funcionalidades Implementadas
 
-### 1. 🏠 Página Inicial
+### 1. Página Inicial
 - Apresentação do sistema
 - Cards informativos sobre funcionalidades
 - Tabela de referência de taxas
 - Ações rápidas para navegação
 
-### 2. 📅 Agendamento de Transferências
+### 2. Agendamento de Transferências
 - Formulário com validações
 - Cálculo automático de taxas
 - Validação de datas (máximo 50 dias)
 - Formatação de contas (XXXXXXXXXX)
 - Feedback visual de erros e sucesso
 
-### 3. 📊 Extrato de Transferências
+### 3. Extrato de Transferências
 - Lista completa de transferências
 - Filtros por conta origem/destino
 - Filtros por período de datas
@@ -63,19 +63,19 @@ src/
 - Modal de detalhes
 - Funcionalidade de cancelamento
 
-### 4. 🧮 Calculadora de Taxas
+### 4. Calculadora de Taxas
 - Cálculo independente de taxas
 - Tabela de referência completa
 - Validação de regras de negócio
 - Informações detalhadas sobre taxas
 
-### 5. 🧭 Navegação
+### 5. Navegação
 - Menu responsivo
 - Navegação entre páginas
 - Indicadores de página ativa
 - Design mobile-first
 
-## 🔌 Integração com Backend
+## Integração com Backend
 
 ### Endpoints Utilizados
 - `POST /api/transferencias` - Agendar transferência
@@ -113,7 +113,7 @@ interface CalculoTaxa {
 }
 ```
 
-## 🎨 Design e UX
+## Design e UX
 
 ### Características do Design
 - **Design System Consistente** com cores e tipografia padronizadas
@@ -131,7 +131,7 @@ interface CalculoTaxa {
 - **Aviso**: #ffc107 (Amarelo)
 - **Neutro**: #6c757d (Cinza)
 
-## 🛠️ Instalação e Execução
+## Instalação e Execução
 
 ### Pré-requisitos
 - **Node.js 20** ou superior
@@ -165,7 +165,7 @@ A aplicação estará disponível em: `http://localhost:4200`
 ng build --configuration production
 ```
 
-## 📱 Responsividade
+## Responsividade
 
 ### Breakpoints Implementados
 - **Desktop**: > 1200px
@@ -179,7 +179,7 @@ ng build --configuration production
 - Botões com tamanhos adequados
 - Espaçamentos ajustados
 
-## 🧪 Testes
+## Testes
 
 ### Executar Testes
 ```bash
@@ -193,7 +193,7 @@ ng e2e
 ng test --code-coverage
 ```
 
-## 🚀 Deploy
+## Deploy
 
 ### Build de Produção
 ```bash
@@ -208,7 +208,7 @@ Os arquivos compilados estarão em `dist/transferencia-frontend/`
 - **Apache**
 - **Servidor estático** (Node.js, Python, etc.)
 
-## 🔧 Configurações
+## Configurações
 
 ### Variáveis de Ambiente
 ```typescript
@@ -235,7 +235,7 @@ private readonly baseUrl = 'http://localhost:8080/api/transferencias';
 }
 ```
 
-## 📊 Performance
+## Performance
 
 ### Otimizações Implementadas
 - **Lazy Loading** de componentes
@@ -251,7 +251,7 @@ private readonly baseUrl = 'http://localhost:8080/api/transferencias';
 - **Cumulative Layout Shift**: < 0.1
 - **First Input Delay**: < 100ms
 
-## 🔒 Segurança
+## Segurança
 
 ### Validações Implementadas
 - **Validação de Formulários** no frontend
@@ -260,7 +260,7 @@ private readonly baseUrl = 'http://localhost:8080/api/transferencias';
 - **CORS** configurado no backend
 - **HTTPS** recomendado para produção
 
-## 📝 Logs e Monitoramento
+## Logs e Monitoramento
 
 ### Console Logs
 - Logs de erro para debugging
@@ -273,41 +273,9 @@ private readonly baseUrl = 'http://localhost:8080/api/transferencias';
 - **Fallback UI** para estados de erro
 - **Retry Mechanisms** para falhas temporárias
 
-## 🤝 Contribuição
-
-### Padrões de Código
-- **ESLint** para linting
-- **Prettier** para formatação
-- **Angular Style Guide** para estrutura
-- **TypeScript Strict Mode** habilitado
-
-### Processo de Desenvolvimento
-1. Fork do repositório
-2. Criação de branch para feature
-3. Implementação com testes
-4. Pull Request com descrição detalhada
-5. Code Review obrigatório
-
-## 📄 Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
-## 👥 Autores
+## Autores
 
 - **Erion Maia** - [erionmaia@gmail.com](mailto:erionmaia@gmail.com)
-
-## 🙏 Agradecimentos
-
-- Equipe de desenvolvimento
-- Comunidade Angular
-- Contribuidores do projeto
-
-## 📞 Suporte
-
-Para dúvidas ou suporte:
-- **Email**: erionmaia@gmail.com
-- **Issues**: [GitHub Issues](https://github.com/erionmaia/transferencia-frontend/issues)
-- **Documentação**: Este README
 
 ---
 
