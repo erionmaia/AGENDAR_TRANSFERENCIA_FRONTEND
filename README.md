@@ -281,7 +281,7 @@ private readonly baseUrl = 'http://localhost:8080/api/transferencias';
 ---
 
 **Versão**: 1.0.0  
-**Última Atualização**: Janeiro 2024  
-**Status**: ✅ Produção  
+**Última Atualização**: Agosto 2025  
+**Status**: ✅ Desenvolvimento  
 **Angular**: 20.2.0  
 **Node.js**: 22.18.0
